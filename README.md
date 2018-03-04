@@ -159,3 +159,97 @@ DevServer 同时有多个实用功能:
 - Loader: 模块转换器， 用于把模块原内容按照需求转换成新内容。
 - Plugin: 扩展插件， 在 Webpack 构建流程中的特定时机注入扩展逻辑，挂载钩子来改变构建的结果或者做你想要做的事件。
 
+DEMO00 [hello_webpack](/hello_webpack)
+
+DEMO01 [hello_loader](/hello_devserver)
+
+DEMO02 [hello_plugin](/hello_plugin)
+
+DEMO03 [hello_devserver](/hello_devserver)
+
+
+
+# 配置
+
+## Entry
+
+entry 是配置模块的入口，可抽象成输入， Webpack 执行构建的第一步将从入口开始搜寻及递归解析出所有入口依赖的模块。**Entry** 是必填的，不填会报错。
+
+### context
+
+webpack 在寻找路径文件的时候会以 context 为根目录， context 默认执行启动在 Webpack 时所在的当前工作目录。context 必须是一个绝对路径的字符串。自己自定义的需要写在 `module.exports` 里面。context 是会影响到 Entry 所指的相对路径文件。
+
+```javascript
+    module.exports = {
+        context: path.resolve(__dirname, 'app')
+    }
+```
+
+或者 
+
+在启动 Webpack 时带上 webpack --context。
+
+### 入口Chunk
+
+Webpack 会为每个生成的 Chunk 取一个名称，入口 Chunk 就会跟 Entry 的配置有关系了。
+
+### Entry类型
+
+可以是类型进行填写：
+
+- string字符串 
+
+入口模块的文件路径，是相对路径：
+```javascript
+    module.exports = {
+        entry: './app/entry'
+    }
+```
+
+
+- array数组
+
+入口模块的路径，是数组的相对路径
+```javascript
+    module.exports = {
+        entry: ['./app/entry1','./app/entry2']
+    }
+```
+如果 entry 是一个 string 或者 array, 就会生成一个 Chunk, 这是 Chunk 的名称是 main.
+
+- object是对像
+
+可以用来配置多个入口
+```javascript
+    module.exports = {
+        entry: {
+            a: './app/entry-a',
+            b: ['./app/entry-b1','./app/entry-b2']
+        }
+    }
+```
+如果 entry 是一个 object, 就可能会出现多个入口 Chunk, 这是 Chunk 的名称是 object 键值对里面的名称。比如 a b。
+
+- 动态配置 Entry
+
+如果项目里面有多个页面的入口 Entry, 而且这些入口是异步变化，不断增加的，这是 Entry 就不能写成静态的值。一般会设置成异步函数去返回上面的配置值。
+
+```javascript
+// 同步函数
+    entry: () => {
+        return {
+            a: './pages/a',
+            b: './pages/b',
+        }
+    }
+
+// 异步函数
+    entry: () => {
+        return new Promise((resolve) => {
+            resolve({
+                a: './pages/a',
+                b: './pages/b',
+            })
+        })
+    }
+```
