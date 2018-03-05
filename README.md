@@ -253,3 +253,91 @@ Webpack 会为每个生成的 Chunk 取一个名称，入口 Chunk 就会跟 Ent
         })
     }
 ```
+
+
+## Output
+
+output 配置是一个object对象,里面包含一些配置下面详细看看：
+
+1. filename
+
+`output.filename` 配置输出文件的名称，为string 类型。 如果只有一个输出的文件，则写成静态的:
+
+```javascript
+    module.exports = {
+        entry: './main.js',
+        output: {
+            filename: 'bundle.js'
+        }
+    }
+```
+
+但是有多个 Chunk 要输出的时候，就需要借助模版和变量了。可以根据入口 Chunk 的名称来区分输出的文件名
+变量有多种方式：
+
+- `id` 变量名
+
+    `filename: '[id].js'` 表示 Chunk 的唯一标识，从0开始。
+
+- `name`变量名
+
+    `filename: '[name].js'` 表示 Chunk 的名称。
+
+- `hash`变量
+
+    `filename: '[hash].js'` 表示 Chunk 的唯一标识 Hash 值。
+
+- `chunkhash` 变量
+
+    `filename: '[chunkhash].js'` 表示 Chunk 内容的 Hash 值.
+    `hash` 和 `chunkhash` 长度都是可以指定的， [hash:8] 代表取8位 Hash 值，默认 20 位。
+
+> 注意 ExtractTextWebpackPlugin 插件是使用 contenthash 来代表哈希值而不是 chunkhash， 原因在于 ExtractTextWebpackPlugin 提取出来的内容是代码内容本身而不是由一组模块组成的 Chunk。
+
+2. chunkFilename
+
+`output.chunkFilename` 是配置无入口的 Chunk 在输出时的文件名称。跟 filename 是不同的。
+
+```javascript
+    module.exports = {
+        entry: './main.js',
+        output: {
+            // filename 是根据输入文件名，得出文件的比如 main.js。
+            filename: '[name].js'
+            // chunkFilename 是未被列在 entry 中,却又被 打包出来的文件命配置。会根据未列出来的打包成文件  tips.js 等。
+            chunkFilename: '[name].js'
+        }
+    }
+```
+
+3. path 路径
+
+`output.path` 配置输出文件存放在本地的目录路径，要是 string 类型的绝对路径。通常使用 Node.js 的 path 去获取绝对路径：
+
+```javascript
+    module.exports = {
+        entry: './main.js',
+        output: {
+            filename: '[name].js',
+            path: path.resolve(__dirname, 'dist_[hash]')
+        }
+    }
+```
+
+4. publicPath 公共资源路径
+
+`output.publicPath` 可以用来配置公共的异步资源，可以把原文件上传到 CDN 服务器上面，可以异步快速加载到 webpack 构建后的项目中。
+
+5. crossOriginLoading
+
+Webpack异步加载 JS 文件可以通过 `crossOriginLoading` 属性配置，`crossOriginLoading` 是通过 JSONP 方式实现的。
+
+当如果使用 Webpack 去构建一个被其仔模块导入使用的库时，会使用到下面 `output` 属性:
+
+- libraryTarget 和 library
+- var 
+- this
+- window
+- global
+- libraryExport
+- commonjs & commonjs2 等。
