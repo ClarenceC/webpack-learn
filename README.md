@@ -159,13 +159,13 @@ DevServer 同时有多个实用功能:
 - Loader: 模块转换器， 用于把模块原内容按照需求转换成新内容。
 - Plugin: 扩展插件， 在 Webpack 构建流程中的特定时机注入扩展逻辑，挂载钩子来改变构建的结果或者做你想要做的事件。
 
-DEMO00 [hello_webpack](/hello_webpack)
+DEMO0 [hello_webpack](/hello_webpack)
 
-DEMO01 [hello_loader](/hello_devserver)
+DEMO1 [hello_loader](/hello_devserver)
 
-DEMO02 [hello_plugin](/hello_plugin)
+DEMO2 [hello_plugin](/hello_plugin)
 
-DEMO03 [hello_devserver](/hello_devserver)
+DEMO3 [hello_devserver](/hello_devserver)
 
 
 
@@ -433,11 +433,76 @@ Resolve 也是写到 modules 里面的
 
 ```javascript
     module: {
-        rules:[],
+        rules:[
+            ...
+        ],
         resolve: {
+            // 别名 alias 用来配置 components 优化路径，当在 js 里面调用 components 下面组件的时候，可以直接使用 import Button from 'components/button'
             alias: {
                 components: './src/components/'
-            }
+                // or 支持 react结尾的匹配
+                'react$': '/path/to/react.min.js'
+            },
+            // 在引入第三方模块的时候设置优先使用那份代码
+            mainFields: ['browser','main'],
+            // 在导入语句没带文件后缀时，尝试的后缀列表
+            extensions: ['.js','.json'],
+            // 设置去那里寻找第三方模块，可以优化你的查找速度
+            modules: ['./src/components','node_modules'],
+            // 配置描述你的第三方模块文件的名称，默认 package.json。
+            descriptionFiles: ['package.json'],
+            // 如果设置为 true 所有导入语句的文件都必须带后缀
+            enforceExtension: true,
         }
     }
 ```
+
+## Plgugin
+
+Plugin 是第三方扩展的插件，可以帮助 Webpack 构建相关的事件，配置也不难。
+
+```javascript
+// 引入第三方 Plugin 插件包
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
+
+module.exports = {
+    plugins: [
+        // 所有页面都会用到的公共代码提取到 common 代码块中
+        // 在 CommonsChunkPlugin 里面传入的参数，是插件提供的接口
+        new CommonsChunkPlugin({
+            name: 'common',
+            chunks: ['a','b']
+        })
+    ]
+}
+
+```
+
+## devServer
+
+- `devServer.hot` 热模块替换功能
+
+- `devServer.inline` 开启后会自动注入代码，刷新网页实现实时预览。
+
+- `devServer.historyApiFallback` 开启后对匹配好的路由都返回一个对应的 HTML 文件。或者可以自定义 `historyApiFallback` 匹配的路径文件。
+
+- `devServer.contentBase` 配置 DevServer HTTP 服务器的文件根目录。会暴露本地文件。
+
+- `devServer.headers` 可以设置 HTTP 响应头。
+
+- `devServer.port` 配置 DevServer 的服务监听端口
+
+- `devServer.allowedHosts` 配置一个白名单列表里，只有里面的才能 HTTP 请求正常返回。
+
+- `devServer.https` 用来配置是否使用 HTTPS 协议，和可以自定义要使用的证书。
+
+- `devServer.clientLogLevel` 可以配置客户端日志等级，会影响到你在浏览器控制台所看到的日志内容。
+
+- `devServer.compress` 配置是否启用 gzip 压缩。
+
+- `devServer.open` 配置是否第一次启动后打开系统默认浏览器去打开网页。
+
+
+
+
+
