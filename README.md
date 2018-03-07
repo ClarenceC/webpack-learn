@@ -341,3 +341,103 @@ Webpack异步加载 JS 文件可以通过 `crossOriginLoading` 属性配置，`c
 - global
 - libraryExport
 - commonjs & commonjs2 等。
+
+## Module
+
+### 配置 Loader
+
+还记得上一节配置过 **Loader** , **Loader** 是 `module` 里面的规则数组 `rules`,每个规则过滤不同要处理的文件，过滤后交给 **Loader** 去处理。
+
+```javascript
+    module: {
+        rules: [
+            {
+                // 匹配上 js 文件
+                test: /\.js$/, // test 也能写成数组
+                // 用 babel-loader 转换 JavaScript 文件
+                // ?cacheDirectory 表示传给 babel-loader 的参数,用于缓存 babel 编译结果加快重新编译速度
+                use: ['babel-loader?cacheDirectory'],
+                //or 如果多参数的时候，use 可以使用数组答对象来写，下面这个 use 等同于上面这个 use
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true,
+                        },
+                        enforce: 'post' //执行顺序从后到前
+                        //enforce: 'pre' 执行顺序从前到后
+                    }
+                ],
+                // 只过滤 src 目录里面的 js 文件，加快 Webpack 搜索。
+                include: path.resolve(__dirname, 'src')
+                // or include 可以写成数组的方法
+                include: [
+                    path.resolve(__dirname, 'src'),
+                    path.resolve(__dirname, 'test')
+                ]
+            }, 
+            {
+                // 匹配上 SCSS 文件
+                test: /\.scss$/,
+                // 使用一组 Loader 去处理 SCSS 文件。
+                // 处理顺序为从后到前，从 'sass-loader'到'style-loader'
+                use: ['style-loader','css-loader','sass-loader'],
+                // 不包含 node_modules 目录下的文件
+                exclude: path.resolve(__dirname, 'node_modules'),
+                // or exclude 很多的话可以写成数组
+                exclude: [
+                    path.resolve(__dirname, 'node_modules'),
+                    path.resolve(__dirname, 'bower_modules'),
+                ]
+            },
+            {
+                // 对非文本文件采用 file-loader 加载
+                test: /\.(gif|png|jpe?g|eot|woff|ttf|svg|pdf)$/,
+                use: ['file-loader'],
+            },
+        ]
+    }
+```
+
+### noParse
+
+配置 noParse 可以配置些不需要模块化的文件比如 JQuery, ChartJS 等。
+
+### parser
+
+可以详细自定义模块化的类型，如下面：
+
+```javascript
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                use: ['babel-loader'],
+                parser: {
+                    amd: false,  //禁用 AMD
+                    commonjs: false, // 禁用 CommonJS
+                    system: false,  // 禁用 SystemJS
+                    harmony: false, // 禁用 ES6 import export
+                    requireInclude: false, //禁用 require.include
+                    ...
+                }
+            }
+        ]
+    }
+```
+
+
+## Resolve
+
+Resolve 也是写到 modules 里面的
+
+```javascript
+    module: {
+        rules:[],
+        resolve: {
+            alias: {
+                components: './src/components/'
+            }
+        }
+    }
+```
