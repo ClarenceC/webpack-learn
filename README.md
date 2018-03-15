@@ -772,6 +772,8 @@ module.exports = {
 }
 ```
 
+## 整体 `webpack.config.js` 对像属性结构
+
 ```
 module.exports
 |
