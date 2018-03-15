@@ -771,3 +771,21 @@ module.exports = {
     }
 }
 ```
+
+```
+module.exports
+|
+|-- entry 入口
+|-- output 输出
+|-- module 配置 Loader 
+|-- plugins 配置 插件
+|-- resolve 配置寻找模块的规则
+|-- performance 配置输出文件性能检查配置
+|-- devtool 配置 source-map 类型
+|-- context 的根目录路径
+|-- target 输出的代码运行环境
+|-- externals 使用来自 JavaScript 运行环境提供的全局变量
+|-- stats 控制控制台输出日志
+|__ devServer 配置 devServer 
+
+```
