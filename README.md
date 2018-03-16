@@ -777,12 +777,12 @@ module.exports = {
 ```
 module.exports
 |
-|-- entry 入口
-|-- output 输出
-|-- module 配置 Loader 
-|-- plugins 配置 插件
-|-- resolve 配置寻找模块的规则
-|-- performance 配置输出文件性能检查配置
+|-- entry 入口[让源文件加入到构建流程中]
+|-- output 输出[输出文件的位置和名称]
+|-- module 配置[Loader 转换文件的策略]
+|-- plugins 配置[插件 其它额外的需求]
+|-- resolve 配置寻找模块的规则 [寻找依赖模块时的策略]
+|-- performance 配置输出文件性能检查配置 
 |-- devtool 配置 source-map 类型
 |-- context 的根目录路径
 |-- target 输出的代码运行环境
@@ -790,4 +790,76 @@ module.exports
 |-- stats 控制控制台输出日志
 |__ devServer 配置 devServer 
 
+```
+
+
+## 多种配置类型
+
+除了用一个 Object 来配置 webpack外， 还有其它更灵活的方式。
+
+### 导出一个 Function
+
+如果把 `webpack.config.js` 的配置写成一个 Function 的方法，可以通过 JavaScript 灵活的控制配置。
+
+```javascript
+    const path = require('path')
+    const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin')
+
+    // env 为当前的环境变量 argv 为 webpack 命令行的传入的参数。
+    module.exports = function(env = {}, argv) {
+        const plugins = []
+
+        const isProduction = env['production']
+        
+        // 在生成环境才压缩
+        if (isProduction) {
+            plugins.push(
+                // 压缩输出的 JS 代码
+                new UglifyJsPlugin()
+            )
+        }
+
+        return {
+            plugins: plugins,
+            // 在生成环境不输出  Source Map
+            devtool: isProduction ? undefined: 'source-map',
+        };
+    }
+```
+
+### 返回一个 Promise 函数
+
+```javascript
+    module.exports = function(env = {}, argv) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve({
+                    //...
+                })
+            }, 5000)
+        })
+    }
+```
+
+### 导出多份配置
+
+webpack 3.1.0 以后支持导出一个数组,每份配置都会执行一遍构建。
+
+```javascript
+    module.exports = [
+        // 采用 Object 描述的一份配置
+        {
+            //
+        },
+        // 采用函数描述的一份配置
+        function() {
+            return {
+                // ...
+            }
+        },
+        // 采用异步函数描述的一份配置
+        function() {
+            return Promise();
+        }
+    ]
 ```
