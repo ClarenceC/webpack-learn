@@ -10,5 +10,4 @@
 - :rocket: [Webpack中hash与chunkhash的区别，以及js与css的hash指纹解耦方案](http://www.cnblogs.com/ihardcoder/p/5623411.html)
 - :rocket: [简单的webpack- 引入bootstrap](http://blog.csdn.net/zshake/article/details/72311617)
 - :rocket: [webpack引入bootstrap](https://visonforcoding.github.io/webpackyin-ru-bootstrap.html)
-- :rocket: [Webpack 4 不完全迁移指北](https://github.com/dwqs/blog/issues/60)
 - :rocket: [基于webpack的前后端分离开发环境实战](https://segmentfault.com/a/1190000009266900)
