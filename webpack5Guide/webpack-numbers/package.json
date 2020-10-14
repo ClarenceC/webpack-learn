@@ -1,0 +1,16 @@
+{
+  "name": "webpack-numbers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/webpack-numbers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lodash": "^4.17.20",
+    "webpack": "^5.1.0"
+  }
+}
