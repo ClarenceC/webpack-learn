@@ -9,7 +9,8 @@
     "start": "webpack serve --mode development --env development",
     "build": "webpack",
     "server": "node server.js",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "testEnv": "webpack --env.NODE_ENV=local --env.production --progress"
   },
   "keywords": [],
   "author": "",
