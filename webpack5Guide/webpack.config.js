@@ -1,6 +1,6 @@
 const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 // module.exports = {
 //   entry: {
@@ -8,7 +8,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 //   },
 //   mode: 'development',
 //   devServer: {
-//     contentBase: './dist'
+//     contentBase: './dist',
+//     hot: true
 //   },
 //   plugins: [
 //     new CleanWebpackPlugin({
@@ -38,15 +39,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 //   }
 // }
 
-module.exports = env => {
-  console.log('NODE_ENV: ', env.NODE_ENV)
-  console.log('Production: ', env.production)
-
-  return {
-    entry: './src/index.js',
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist')
-    }
-  }
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  mode: 'production'
+  // mode: 'development',
+  // optimization: {
+  //   usedExports: true
+  // }
 }

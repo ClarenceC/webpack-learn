@@ -1,0 +1,1 @@
+(()=>{"use strict";document.body.appendChild(function(){const e=document.createElement("pre");return Element.innerHTML=["Hello webpack!","5 cube is equal to "+(5,125)].join("\n\n"),e}())})();

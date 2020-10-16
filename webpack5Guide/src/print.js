@@ -1,3 +1,3 @@
-export default function print(text) {
-  console.log(text)
+export default function print() {
+  console.log('Updating print.js...')
 }
