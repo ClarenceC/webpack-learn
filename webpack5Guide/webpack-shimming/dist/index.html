@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const modernBrowser = (
+      'fetch' in window &&
+      'assign' in Object
+    )
+    if (!modernBrowser) {
+      const scriptElement = document.createElement('script')
+      scriptElement.async = false
+      scriptElement.src =  './polyfills.bundle.js'
+      document.head.appendChild(scriptElement)
+    }
+  </script>
+</head>
+<body>
+  <script src="index.bundle.js"></script>
+</body>
+</html>
